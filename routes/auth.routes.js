@@ -6,6 +6,8 @@ const config = require("config");
 const { validationResult, check } = require("express-validator")
 const router = new Router();
 const authMiddleware = require("../middleware/auth.middleware")
+const fileService = require('../services/fileService')
+const File = require('../models/File')
 
 
 router.post("/registration", [
@@ -17,19 +19,16 @@ router.post("/registration", [
     if (!errors.isEmpty) {
       return res.status(400).json({ message: "Uncurrent request", errors })
     }
-
     const { email, password } = req.body
-
     const candidate = await User.findOne({ email })
     if (candidate) {
       return res.status(400).json({ message: `User with email ${email} already exists` })
     }
-
-    const hashPassword = await bcrypt.hash(password, 7)
+    const hashPassword = await bcrypt.hash(password, 8)
     const user = new User({ email, password: hashPassword })
     await user.save()
+    await fileService.createDir(new File({ user: user.id, name: '' }))
     return res.status(200).json({ message: "User created successfully" })
-
   } catch (error) {
     console.log(error);
     res.send({ message: "Server error" });
@@ -44,7 +43,6 @@ router.post("/login", [
     if (!user) {
       return res.status(400).json({ message: "User not found" })
     }
-
     const isPassValid = bcrypt.compareSync(password, user.password)
     if (!isPassValid) {
       return res.status(400).json({ message: "Invalid password" })

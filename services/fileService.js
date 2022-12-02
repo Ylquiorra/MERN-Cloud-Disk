@@ -13,12 +13,24 @@ class FileService {
           return resolve({ message: "File was created successfully" })
         } else {
           return reject({ message: "File already exists" })
-
         }
       } catch (error) {
         return reject({ message: error.message })
       }
     })
+  }
+
+  deleteFile(file) {
+    const path = this.getPath(file)
+    if (file.type === 'dir') {
+      fs.rmdirSync(path)
+    } else {
+      fs.unlinkSync(path)
+    }
+  }
+
+  getPath(file) {
+    return config.get('filePath') + '\\' + file.user + '\\' + file.path
   }
 }
 

@@ -2,5 +2,6 @@
   "serverPort": 5000,
   "dbUrl": "mongodb+srv://Ylquiorra:MWnvP0rYwdr9VTRA@cloud-disk.tcavrjm.mongodb.net/?retryWrites=true&w=majority",
   "secretKey": "YlquiorraMWnvP0rYwdr9VTRA@cloud",
-  "filePath": "J:\\React-apps\\MERN-cloud-disk\\server\\_files"
+  "filePath": "J:\\React-apps\\MERN-cloud-disk\\server\\_files",
+  "staticPath": "J:\\React-apps\\MERN-cloud-disk\\server\\_files\\static"
 }

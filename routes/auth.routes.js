@@ -19,15 +19,15 @@ router.post("/registration", [
     if (!errors.isEmpty) {
       return res.status(400).json({ message: "Uncurrent request", errors })
     }
-    const { email, password } = req.body
+    const { email, password, firstName, lastName } = req.body
     const candidate = await User.findOne({ email })
     if (candidate) {
       return res.status(400).json({ message: `User with email ${email} already exists` })
     }
     const hashPassword = await bcrypt.hash(password, 8)
-    const user = new User({ email, password: hashPassword })
+    const user = new User({ email, password: hashPassword, firstName, lastName })
     await user.save()
-    await fileService.createDir(new File({ user: user.id, name: '' }))
+    await fileService.createDir(req, new File({ user: user.id, name: '' }))
     return res.status(200).json({ message: "User created successfully" })
   } catch (error) {
     console.log(error);
@@ -51,6 +51,8 @@ router.post("/login", [
     return res.json({
       token,
       user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
         id: user.id,
         email: user.email,
         diskSpace: user.diskSpace,
@@ -71,6 +73,8 @@ router.get("/auth", authMiddleware, async (req, res) => {
     return res.json({
       token,
       user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
         id: user.id,
         email: user.email,
         diskSpace: user.diskSpace,

@@ -55,7 +55,7 @@ router.post("/login", [
         email: user.email,
         diskSpace: user.diskSpace,
         usedSpace: user.usedSpace,
-        avatart: user.avatart,
+        avatar: user.avatar,
       }
     })
   } catch (error) {
@@ -75,7 +75,7 @@ router.get("/auth", authMiddleware, async (req, res) => {
         email: user.email,
         diskSpace: user.diskSpace,
         usedSpace: user.usedSpace,
-        avatart: user.avatart,
+        avatar: user.avatar,
       }
     })
   } catch (error) {
